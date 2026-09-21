@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --grid-line: rgba(99, 102, 241, 0.06);
+    --grid-dot: rgba(148, 163, 184, 0.3);
+    --aurora-1: rgba(59, 130, 246, 0.16);
+    --aurora-2: rgba(139, 92, 246, 0.14);
+    --aurora-3: rgba(16, 185, 129, 0.08);
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    color: #e2e8f0;
+    background-color: #080b11;
+    position: relative;
+    overflow-x: hidden;
+
+    /* Base coordinate grid */
+    background-image:
+      radial-gradient(var(--grid-dot) 1px, transparent 1px),
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+    background-size: 28px 28px, 56px 56px, 56px 56px;
+    background-attachment: fixed;
+  }
+
+  /* Animated living aurora field behind all content */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    z-index: -1;
+    background: 
+      radial-gradient(circle at 30% 30%, var(--aurora-1) 0%, transparent 45%),
+      radial-gradient(circle at 75% 70%, var(--aurora-2) 0%, transparent 50%),
+      radial-gradient(circle at 15% 85%, var(--aurora-3) 0%, transparent 40%);
+    animation: aurora-drift 24s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  /* Micro-dot CRT noise overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  ::selection {
+    background-color: rgba(99, 102, 241, 0.4);
+    color: #a5b4fc;
+    text-shadow: 0 0 10px rgba(99, 102, 241, 0.7);
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(8, 11, 17, 0.8);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #3b82f6, #6366f1, #8b5cf6);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #60a5fa, #818cf8, #a78bfa);
+  }
+
+  input:focus, textarea:focus, select:focus {
+    outline: none !important;
+    border-color: rgba(99, 102, 241, 0.8) !important;
+    box-shadow:
+      0 0 0 3px rgba(99, 102, 241, 0.25),
+      0 0 24px -2px rgba(59, 130, 246, 0.35) !important;
+  }
+}
+
+@layer components {
+  /* Chameleon glass panel with holographic sheen */
+  .acrylic-card {
+    position: relative;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.015) 60%,
+      rgba(99, 102, 241, 0.03) 100%
+    ), rgba(13, 17, 26, 0.82);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow:
+      inset 0 1px 1px 0 rgba(255, 255, 255, 0.15),
+      inset 0 -1px 1px 0 rgba(0, 0, 0, 0.4),
+      0 12px 32px -8px rgba(0, 0, 0, 0.65);
+  }
+
+  /* Prismatic edge shimmer for prominent callouts */
+  .prismatic-border {
+    position: relative;
+  }
+  .prismatic-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      120deg,
+      rgba(59, 130, 246, 0.6),
+      rgba(147, 51, 234, 0.6),
+      rgba(236, 72, 153, 0.6),
+      rgba(59, 130, 246, 0.6)
+    );
+    background-size: 300% 300%;
+    animation: prismatic-flow 8s ease infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Kinetic hover lift with interactive shadow projection */
+  .ticket-card-hover {
+    transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .ticket-card-hover:hover {
+    transform: translateY(-2px) scale(1.008);
+    border-color: rgba(129, 140, 248, 0.45);
+    background: rgba(22, 29, 44, 0.9);
+    box-shadow:
+      0 14px 28px -6px rgba(0, 0, 0, 0.55),
+      0 0 20px -2px rgba(99, 102, 241, 0.3);
+  }
+
+  /* Terminal-style subtle status badge glow */
+  .status-badge {
+    position: relative;
+    overflow: hidden;
+  }
+  .status-badge::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: badge-sweep 4s infinite ease-in-out;
+  }
+}
+
+/* Animations */
+@keyframes aurora-drift {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-5%, -8%) scale(1.08); }
+  100% { transform: translate(6%, 5%) scale(0.96); }
+}
+
+@keyframes prismatic-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes badge-sweep {
+  0%, 75% { left: -100%; }
+  100% { left: 200%; }
+}
+
+@keyframes status-radar-red {
+  0% { transform: scale(0.92); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.8); }
+  70% { transform: scale(1); box-shadow: 0 0 0 9px rgba(244, 63, 94, 0); }
+  100% { transform: scale(0.92); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+}
+
+@keyframes status-radar-emerald {
+  0% { transform: scale(0.92); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.8); }
+  70% { transform: scale(1); box-shadow: 0 0 0 9px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.92); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.radar-urgent {
+  animation: status-radar-red 1.6s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.radar-live {
+  animation: status-radar-emerald 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
